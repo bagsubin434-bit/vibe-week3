@@ -1,0 +1,56 @@
+name: Daily Hello
+
+on:
+  schedule:
+    # 매일 오전 9시(KST) = 00:00 UTC
+    - cron: "0 0 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update-quote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pick random quote and update README
+        run: |
+          python3 - <<'PY'
+          import random
+          import re
+          import pathlib
+
+          quotes = [
+              line.strip()
+              for line in pathlib.Path("quotes.txt").read_text(encoding="utf-8").splitlines()
+              if line.strip()
+          ]
+          quote = random.choice(quotes)
+
+          readme = pathlib.Path("README.md")
+          text = readme.read_text(encoding="utf-8")
+
+          pattern = re.compile(r"(<!-- QUOTE:START -->\n).*?(\n<!-- QUOTE:END -->)", re.DOTALL)
+          new_text, count = pattern.subn(lambda m: m.group(1) + quote + m.group(2), text)
+
+          if count == 0:
+              raise SystemExit("QUOTE:START / QUOTE:END 마커를 README.md에서 찾지 못했습니다.")
+
+          readme.write_text(new_text, encoding="utf-8")
+          print(f"오늘의 한마디: {quote}")
+          PY
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "변경 사항 없음, 커밋 생략"
+          else
+            git commit -m "chore: 오늘의 한마디 갱신 ($(date -u +'%Y-%m-%d'))"
+            git push
+          fi
