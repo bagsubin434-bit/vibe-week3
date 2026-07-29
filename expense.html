@@ -73,17 +73,32 @@
     button[type="submit"] {
       border: none;
       border-radius: 12px;
-      background: #ffb6d9;
-      color: #6b4c6b;
+      background: #bb8cff;
+      color: #ffffff;
       font-weight: 700;
       font-size: 14px;
-      padding: 10px 16px;
+      letter-spacing: 0.02em;
+      padding: 10px 22px;
       cursor: pointer;
       white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(187, 140, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
     }
 
     button[type="submit"]:hover {
-      background: #ff9fcc;
+      background: #ac74ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(172, 116, 255, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0) scale(0.97);
+      box-shadow: 0 2px 6px rgba(187, 140, 255, 0.45);
+    }
+
+    button[type="submit"]:focus-visible {
+      outline: 2px solid #bb8cff;
+      outline-offset: 2px;
     }
 
     .list {
@@ -123,23 +138,47 @@
 
     .list .delete-btn {
       border: none;
-      background: transparent;
-      color: #ff8fb3;
-      font-size: 16px;
+      background: #ffffff;
+      color: #bb8cff;
+      font-size: 13px;
+      font-weight: 700;
       line-height: 1;
       cursor: pointer;
-      padding: 4px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(187, 140, 255, 0.35);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
     }
 
     .list .delete-btn:hover {
-      color: #ff5c96;
+      background: #bb8cff;
+      color: #ffffff;
+      transform: scale(1.12) rotate(90deg);
+      box-shadow: 0 4px 10px rgba(187, 140, 255, 0.5);
+    }
+
+    .list .delete-btn:active {
+      transform: scale(0.95) rotate(90deg);
+    }
+
+    .list .delete-btn:focus-visible {
+      outline: 2px solid #bb8cff;
+      outline-offset: 2px;
     }
 
     .empty {
       text-align: center;
-      color: #c3a9c9;
+      color: #a98fb0;
       font-size: 14px;
-      padding: 16px 0;
+      padding: 24px 16px;
+      background: #f6eef7;
+      border: 1.5px dashed #d8c2e0;
+      border-radius: 12px;
     }
 
     .total {
@@ -191,7 +230,7 @@
       if (expenses.length === 0) {
         const empty = document.createElement('li');
         empty.className = 'empty';
-        empty.textContent = '아직 등록된 항목이 없어요';
+        empty.textContent = '아직 등록된 지출이 없어요. 첫 지출을 기록해 보세요 🧾';
         list.appendChild(empty);
       } else {
         expenses.forEach((expense) => {
