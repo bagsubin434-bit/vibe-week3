@@ -44,7 +44,7 @@
 
     .tagline {
       font-size: 15px;
-      color: #9a7ea3;
+      color: #7a6386;
       margin-bottom: 24px;
     }
 
@@ -75,6 +75,61 @@
       background: #e6ffe9;
       color: #5a9a6a;
     }
+
+    .mood {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid #f1e4f1;
+    }
+
+    .mood-label {
+      font-size: 14px;
+      color: #7a6386;
+      margin: 0 0 12px;
+    }
+
+    .mood-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .mood-btn {
+      border: none;
+      border-radius: 12px;
+      background: #bb8cff;
+      color: #ffffff;
+      font-size: 20px;
+      padding: 10px 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(187, 140, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    .mood-btn:hover {
+      background: #ac74ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(172, 116, 255, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .mood-btn:active {
+      transform: translateY(0) scale(0.97);
+      box-shadow: 0 2px 6px rgba(187, 140, 255, 0.45);
+    }
+
+    .mood-btn:focus-visible {
+      outline: 2px solid #bb8cff;
+      outline-offset: 2px;
+    }
+
+    .mood-message {
+      min-height: 40px;
+      margin: 14px 0 0;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: #6b4c6b;
+    }
   </style>
 </head>
 <body>
@@ -87,6 +142,28 @@
       <li>📚 책 읽기</li>
       <li>🌱 식물 키우기</li>
     </ul>
+    <div class="mood">
+      <p class="mood-label">오늘 하루는 어떠셨나요?</p>
+      <div class="mood-buttons">
+        <button type="button" class="mood-btn" data-mood="happy" aria-label="행복해요">😊</button>
+        <button type="button" class="mood-btn" data-mood="tired" aria-label="피곤해요">😴</button>
+        <button type="button" class="mood-btn" data-mood="stressed" aria-label="스트레스 받아요">😤</button>
+      </div>
+      <p class="mood-message" id="mood-message" aria-live="polite"></p>
+    </div>
   </div>
+  <script>
+    const moodMessages = {
+      happy: '오늘의 그 기분, 계속 이어가요! 🎉',
+      tired: '오늘 정말 고생 많았어요. 잠깐이라도 쉬어가요 🌙',
+      stressed: '잠시 심호흡 한 번, 금방 괜찮아질 거예요 🍃',
+    };
+
+    document.querySelectorAll('.mood-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.getElementById('mood-message').textContent = moodMessages[btn.dataset.mood];
+      });
+    });
+  </script>
 </body>
 </html>
